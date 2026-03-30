@@ -5,14 +5,10 @@ import { useTheme, colors } from '../../src/theme';
 import { useSettingsStore } from '../../src/stores/settingsStore';
 import { Toggle, SectionHeader } from '../../src/components/shared';
 import { userProfile } from '../../src/data/userProfile';
-import Svg, { Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
 
 function ChevronRight({ color }: { color: string }) {
-  return (
-    <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
-      <Path d="M9 18L15 12L9 6" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
+  return <Ionicons name="chevron-forward" size={14} color={color} />;
 }
 
 function SettingRow({

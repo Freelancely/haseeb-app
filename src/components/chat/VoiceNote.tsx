@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme, colors } from '../../theme';
-import Svg, { Path } from 'react-native-svg';
 
 interface Props {
   duration: string;
@@ -16,9 +15,7 @@ export default function VoiceNote({ duration }: Props) {
       <View style={[styles.bubble, { backgroundColor: theme.userBubble }]}>
         {/* Play button */}
         <View style={styles.playBtn}>
-          <Svg width={10} height={10} viewBox="0 0 10 10" fill="none">
-            <Path d="M2 1L8 5L2 9V1Z" fill="#FFFFFF" />
-          </Svg>
+          <View style={styles.playTriangle} />
         </View>
         {/* Waveform bars */}
         <View style={styles.waveform}>
@@ -64,6 +61,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.haseebGreen,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  playTriangle: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 7,
+    borderTopWidth: 5,
+    borderBottomWidth: 5,
+    borderLeftColor: '#FFFFFF',
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    marginLeft: 2,
   },
   waveform: {
     flexDirection: 'row',

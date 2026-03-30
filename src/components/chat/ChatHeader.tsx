@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, colors } from '../../theme';
 import { CharacterAvatar } from '../shared';
 import type { Channel } from '../../types';
-import Svg, { Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
 
 const channelConfig: Record<Channel, { name: string; subtitle: string; subtitleColor: string }> = {
   haseeb: { name: 'Haseeb', subtitle: 'Online', subtitleColor: colors.successGreen },
@@ -26,9 +26,7 @@ export default function ChatHeader({ channel }: Props) {
   return (
     <View style={[styles.container, { paddingTop: insets.top + 8, borderBottomColor: theme.card.border }]}>
       <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-        <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-          <Path d="M15 18L9 12L15 6" stroke={theme.text.muted} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-        </Svg>
+        <Ionicons name="chevron-back" size={20} color={theme.text.muted} />
       </TouchableOpacity>
       <CharacterAvatar character={channel} size="header" />
       <View style={styles.info}>

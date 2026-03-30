@@ -6,7 +6,7 @@ import { useTheme, colors } from '../src/theme';
 import { ActionButton } from '../src/components/shared';
 import { profitAndLoss } from '../src/data/reportData';
 import { formatKWD } from '../src/utils/currency';
-import Svg, { Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ReportScreen() {
   const { theme } = useTheme();
@@ -19,9 +19,7 @@ export default function ReportScreen() {
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + 8, borderBottomColor: theme.card.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-            <Path d="M15 18L9 12L15 6" stroke={theme.text.muted} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-          </Svg>
+          <Ionicons name="chevron-back" size={20} color={theme.text.muted} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: theme.text.primary }]}>
           {report.title} · {report.period}

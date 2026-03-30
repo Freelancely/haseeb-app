@@ -5,7 +5,7 @@ import { useTheme, colors } from '../../src/theme';
 import { getGroupedResults } from '../../src/data/searchResults';
 import { formatKWD } from '../../src/utils/currency';
 import type { SearchResult } from '../../src/types';
-import Svg, { Path, Circle, Line } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
 
 const typeConfig: Record<string, { color: string; count: number }> = {
   transaction: { color: colors.haseebGreen, count: 12 },
@@ -59,10 +59,7 @@ export default function SearchScreen() {
 
       {/* Search bar */}
       <View style={[styles.searchBar, { backgroundColor: theme.inputBg }]}>
-        <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-          <Circle cx="11" cy="11" r="7" stroke={theme.text.muted} strokeWidth={1.5} />
-          <Line x1="16.5" y1="16.5" x2="21" y2="21" stroke={theme.text.muted} strokeWidth={1.5} strokeLinecap="round" />
-        </Svg>
+        <Ionicons name="search" size={16} color={theme.text.muted} />
         <TextInput
           style={[styles.searchInput, { color: theme.text.body }]}
           value={query}
@@ -72,9 +69,7 @@ export default function SearchScreen() {
         />
         {query.length > 0 && (
           <TouchableOpacity onPress={() => setQuery('')}>
-            <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-              <Path d="M18 6L6 18M6 6L18 18" stroke={theme.text.muted} strokeWidth={1.5} strokeLinecap="round" />
-            </Svg>
+            <Ionicons name="close" size={16} color={theme.text.muted} />
           </TouchableOpacity>
         )}
       </View>
