@@ -1,24 +1,22 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../../src/theme';
 import { ChatHeader, MessageList, InputBar } from '../../src/components/chat';
-import { haseebMessages } from '../../src/data/haseebMessages';
-import { aminahMessages } from '../../src/data/aminahMessages';
-import { invoiceMessages } from '../../src/data/invoiceMessages';
-import type { Channel, Message } from '../../src/types';
-
-const messagesByChannel: Record<Channel, Message[]> = {
-  haseeb: haseebMessages,
-  aminah: aminahMessages,
-  invoices: invoiceMessages,
-};
+import { useChatStore } from '../../src/stores/chatStore';
+import type { Channel } from '../../src/types';
 
 export default function ChatScreen() {
   const { channel } = useLocalSearchParams<{ channel: string }>();
   const { theme } = useTheme();
   const ch = (channel || 'haseeb') as Channel;
-  const messages = messagesByChannel[ch] || [];
+  const messages = useChatStore((s) => s.messages[ch]);
+  const sendMessage = useChatStore((s) => s.sendMessage);
+
+  const handleSend = useCallback(
+    (text: string) => sendMessage(ch, text),
+    [ch, sendMessage],
+  );
 
   return (
     <View style={[styles.container, { backgroundColor: theme.bg }]}>
@@ -29,7 +27,7 @@ export default function ChatScreen() {
         keyboardVerticalOffset={0}
       >
         <MessageList messages={messages} channel={ch} />
-        <InputBar channel={ch} />
+        <InputBar channel={ch} onSend={handleSend} />
       </KeyboardAvoidingView>
     </View>
   );

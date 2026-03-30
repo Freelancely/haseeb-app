@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import type { Message, Channel, TransactionCardData, InvoiceCardData, SnapshotCardData } from '../../types';
 import ChatBubbleUser from './ChatBubbleUser';
@@ -56,13 +56,22 @@ function renderMessage(message: Message, channel: Channel) {
 }
 
 export default function MessageList({ messages, channel }: Props) {
+  const listRef = useRef<FlatList<Message>>(null);
+
   return (
     <FlatList
+      ref={listRef}
       data={messages}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => renderMessage(item, channel)}
       contentContainerStyle={styles.list}
       showsVerticalScrollIndicator={false}
+      onContentSizeChange={() => {
+        listRef.current?.scrollToEnd({ animated: true });
+      }}
+      onLayout={() => {
+        listRef.current?.scrollToEnd({ animated: false });
+      }}
     />
   );
 }

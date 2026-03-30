@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme, colors } from '../../theme';
+import { Ionicons } from '@expo/vector-icons';
 import type { Channel } from '../../types';
-import Svg, { Path, Rect, Line } from 'react-native-svg';
 
 const config: Record<Channel, { placeholder: string; accent: string }> = {
   haseeb: { placeholder: 'Message Haseeb...', accent: colors.haseebGreen },
@@ -13,12 +13,22 @@ const config: Record<Channel, { placeholder: string; accent: string }> = {
 
 interface Props {
   channel: Channel;
+  onSend: (text: string) => void;
 }
 
-export default function InputBar({ channel }: Props) {
+export default function InputBar({ channel, onSend }: Props) {
   const { theme } = useTheme();
   const router = useRouter();
   const { placeholder, accent } = config[channel];
+  const [text, setText] = useState('');
+
+  const hasText = text.trim().length > 0;
+
+  function handleSend() {
+    if (!hasText) return;
+    onSend(text.trim());
+    setText('');
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: theme.bg }]}>
@@ -40,24 +50,38 @@ export default function InputBar({ channel }: Props) {
             style={[styles.input, { color: theme.text.body }]}
             placeholder={placeholder}
             placeholderTextColor={theme.text.muted}
+            value={text}
+            onChangeText={setText}
+            onSubmitEditing={handleSend}
+            returnKeyType="send"
           />
         </View>
 
-        {/* Mic button */}
-        <TouchableOpacity
-          style={[styles.micBtn, { backgroundColor: accent }]}
-          onPress={() => router.push('/voice-active')}
-          activeOpacity={0.7}
-        >
-          {/* Waveform icon */}
-          <View style={styles.waveformIcon}>
-            <View style={[styles.waveBar, { height: 8 }]} />
-            <View style={[styles.waveBar, { height: 14 }]} />
-            <View style={[styles.waveBar, { height: 10 }]} />
-            <View style={[styles.waveBar, { height: 14 }]} />
-            <View style={[styles.waveBar, { height: 8 }]} />
-          </View>
-        </TouchableOpacity>
+        {/* Send button when text exists, mic button otherwise */}
+        {hasText ? (
+          <TouchableOpacity
+            style={[styles.micBtn, { backgroundColor: accent }]}
+            onPress={handleSend}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="arrow-up" size={20} color="#FFFFFF" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.micBtn, { backgroundColor: accent }]}
+            onPress={() => router.push('/voice-active')}
+            activeOpacity={0.7}
+          >
+            {/* Waveform icon */}
+            <View style={styles.waveformIcon}>
+              <View style={[styles.waveBar, { height: 8 }]} />
+              <View style={[styles.waveBar, { height: 14 }]} />
+              <View style={[styles.waveBar, { height: 10 }]} />
+              <View style={[styles.waveBar, { height: 14 }]} />
+              <View style={[styles.waveBar, { height: 8 }]} />
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
